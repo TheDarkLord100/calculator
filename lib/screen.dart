@@ -18,6 +18,58 @@ class _ScreenState extends State<Screen> {
   String output = '';
   bool hideInput = false;
 
+  void onButtonPressed(String key) {
+    if(key == 'mode') {
+      debugPrint("Mode changed");
+    }
+
+    if(key == "AC") {
+      input = '';
+      output = '';
+    }
+
+    if(key == "DEL" && input.isNotEmpty) {
+      input = input.substring(0, input.length- 1);
+      hideInput = false;
+    }
+
+    if(key == "SUBMIT") {
+      try{
+        String exp = input.replaceAll('x', '*');
+        Parser p = Parser();
+        Expression expression = p.parse(exp);
+        ContextModel cm = ContextModel();
+        var finalValue = expression.evaluate(
+            EvaluationType.REAL, cm);
+          output = finalValue.toString();
+          if(output.endsWith('.0')) {
+            output = output.substring(0, output.length - 2);
+          }
+          if(output.length > 12) {
+            output = output.substring(0, 10);
+          }
+          input = output;
+          hideInput = true;
+      } on Exception catch (e) {
+        debugPrint(e.toString());
+          output = 'ERROR!';
+      }
+    }
+
+    if("+/x-".contains(key)) {
+      debugPrint(key);
+      hideInput = false;
+      input = input + key;
+    }
+
+    if(".0123456789".contains(key)) {
+      debugPrint(key);
+      hideInput = false;
+      input = input + key;
+    }
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height / 1.6;
@@ -68,42 +120,22 @@ class _ScreenState extends State<Screen> {
                               size: 36,
                             ),
                           ),
-                          onPressed: () {},
+                          onPressed: () => onButtonPressed("mode"),
                         ).vertPadding(val: 20).asExpanded(),
                         CustomButton(
-                          onPressed: () {
-                            setState(() {
-                              hideInput = false;
-                              input = '${input}7';
-                            });
-                          },
+                          onPressed: () => onButtonPressed('7'),
                           text: '7',
                         ).vertPadding(val: 20).asExpanded(),
                         CustomButton(
-                          onPressed: () {
-                            setState(() {
-                              hideInput = false;
-                              input = '${input}4';
-                            });
-                          },
+                          onPressed: () => onButtonPressed('4'),
                           text: '4',
                         ).vertPadding(val: 20).asExpanded(),
                         CustomButton(
-                          onPressed: () {
-                            setState(() {
-                              hideInput = false;
-                              input = '${input}1';
-                            });
-                          },
+                          onPressed: () => onButtonPressed('1'),
                           text: '1',
                         ).vertPadding(val: 20).asExpanded(),
                         CustomButton(
-                          onPressed: () {
-                            setState(() {
-                              input = '';
-                              output = '';
-                            });
-                          },
+                          onPressed: () => onButtonPressed("AC"),
                           icon: const GradientWidget(
                             Text(
                               'AC',
@@ -119,14 +151,7 @@ class _ScreenState extends State<Screen> {
                     child: Column(
                       children: [
                         CustomButton(
-                          onPressed: () {
-                            hideInput = false;
-                            if(input.isNotEmpty) {
-                              setState(() {
-                                input = input.substring(0, input.length- 1);
-                              });
-                            }
-                          },
+                          onPressed: () => onButtonPressed("DEL"),
                           icon: const GradientWidget(
                             Text(
                               'DEL',
@@ -136,39 +161,19 @@ class _ScreenState extends State<Screen> {
                           // backgroundActive: true,
                         ).vertPadding(val: 20).asExpanded(),
                         CustomButton(
-                          onPressed: () {
-                            hideInput = false;
-                            setState(() {
-                              input = '${input}8';
-                            });
-                          },
+                          onPressed: () => onButtonPressed('8'),
                           text: '8',
                         ).vertPadding(val: 20).asExpanded(),
                         CustomButton(
-                          onPressed: () {
-                            hideInput = false;
-                            setState(() {
-                              input = '${input}5';
-                            });
-                          },
+                          onPressed: () => onButtonPressed('5'),
                           text: '5',
                         ).vertPadding(val: 20).asExpanded(),
                         CustomButton(
-                          onPressed: () {
-                            setState(() {
-                              hideInput = false;
-                              input = '${input}2';
-                            });
-                          },
+                          onPressed: () => onButtonPressed('2'),
                           text: '2',
                         ).vertPadding(val: 20).asExpanded(),
                         CustomButton(
-                          onPressed: () {
-                            setState(() {
-                              hideInput = false;
-                              input = '${input}0';
-                            });
-                          },
+                          onPressed: () => onButtonPressed('0'),
                           text: '0',
                         ).vertPadding(val: 20).asExpanded(),
                       ],
@@ -179,47 +184,24 @@ class _ScreenState extends State<Screen> {
                     child: Column(
                       children: [
                         CustomButton(
-                          onPressed: () {setState(() {
-                            hideInput = false;
-                            input = '$input/';
-                          });},
+                          onPressed: () => onButtonPressed('/'),
                           text: '÷',
                           backgroundActive: true,
                         ).vertPadding(val: 20).asExpanded(),
                         CustomButton(
-                          onPressed: () {
-                            setState(() {
-                              hideInput = false;
-                              input = '${input}9';
-                            });
-                          },
+                          onPressed: () => onButtonPressed('9'),
                           text: '9',
                         ).vertPadding(val: 20).asExpanded(),
                         CustomButton(
-                          onPressed: () {
-                            setState(() {
-                              hideInput = false;
-                              input = '${input}6';
-                            });
-                          },
+                          onPressed: () => onButtonPressed('6'),
                           text: '6',
                         ).vertPadding(val: 20).asExpanded(),
                         CustomButton(
-                          onPressed: () {
-                            setState(() {
-                              hideInput = false;
-                              input = '${input}3';
-                            });
-                          },
+                          onPressed: () => onButtonPressed('3'),
                           text: '3',
                         ).vertPadding(val: 20).asExpanded(),
                         CustomButton(
-                          onPressed: () {
-                            setState(() {
-                              hideInput = false;
-                              input = '$input.';
-                            });
-                          },
+                          onPressed: () => onButtonPressed('.'),
                           text: '.',
                         ).vertPadding(val: 20).asExpanded(),
                       ],
@@ -230,28 +212,17 @@ class _ScreenState extends State<Screen> {
                     child: Column(
                       children: [
                         CustomButton(
-                          onPressed: () {setState(() {
-                            hideInput = false;
-                            input = '${input}x';
-                          });},
-                          text: 'X',
+                          onPressed: () => onButtonPressed('x'),
+                          text: 'x',
                           backgroundActive: true,
                         ).vertPadding(val: 20).asExpanded(),
                         CustomButton(
-                          onPressed: () {setState(() {
-                            hideInput = false;
-                            input = '$input-';
-                          });},
+                          onPressed: () => onButtonPressed('-'),
                           text: '−',
                           backgroundActive: true,
                         ).vertPadding(val: 20).asExpanded(),
                         CustomButton(
-                          onPressed: () {
-                            setState(() {
-                              hideInput = false;
-                              input = '$input+';
-                            });
-                          },
+                          onPressed: () => onButtonPressed('+'),
                           text: '+',
                           backgroundActive: true,
                         ).vertPadding(val: 20).asExpanded(),
@@ -266,32 +237,7 @@ class _ScreenState extends State<Screen> {
                                     Colours.gradientOrange,
                                   ])),
                           child: CustomButton(
-                            onPressed: () {
-                              try{
-                                String exp = input.replaceAll('x', '*');
-                                Parser p = Parser();
-                                Expression expression = p.parse(exp);
-                                ContextModel cm = ContextModel();
-                                var finalValue = expression.evaluate(
-                                    EvaluationType.REAL, cm);
-                                setState(() {
-                                  output = finalValue.toString();
-                                  if(output.endsWith('.0')) {
-                                    output = output.substring(0, output.length - 2);
-                                  }
-                                  if(output.length > 12) {
-                                    output = output.substring(0, 10);
-                                  }
-                                  input = output;
-                                  hideInput = true;
-                                });
-                              } on Exception catch (e) {
-                                debugPrint(e.toString());
-                                setState(() {
-                                  output = 'ERROR!';
-                                });
-                              }
-                            },
+                            onPressed: () => onButtonPressed("SUBMIT"),
                             icon: const Text(
                               '=',
                               style: TextStyle(
