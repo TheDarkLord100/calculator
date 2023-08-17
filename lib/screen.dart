@@ -17,6 +17,7 @@ class _ScreenState extends State<Screen> {
   String input = '';
   String output = '';
   bool hideInput = false;
+  bool resultCalculated = false;
 
   bool isOperator(String key) => "+/x-".contains(key);
 
@@ -27,15 +28,18 @@ class _ScreenState extends State<Screen> {
 
     if(key == "AC") {
       input = '';
+      resultCalculated = false;
       output = '';
     }
 
     if(key == "DEL" && input.isNotEmpty) {
+      resultCalculated = false;
       input = input.substring(0, input.length- 1);
       hideInput = false;
     }
 
     if(key == "SUBMIT") {
+      resultCalculated = true;
       try{
         String exp = input.replaceAll('x', '*');
         Parser p = Parser();
@@ -60,6 +64,7 @@ class _ScreenState extends State<Screen> {
 
     if(isOperator(key)) {
       hideInput = false;
+      resultCalculated = false;
       if(input.isNotEmpty && isOperator(input[input.length -1 ])) {
         input = input.substring(0, input.length - 1);
         input = input + key;
@@ -75,6 +80,10 @@ class _ScreenState extends State<Screen> {
 
     if(".0123456789".contains(key)) {
       hideInput = false;
+      if(resultCalculated) {
+        resultCalculated = false;
+        input = '';
+      }
       input = input + key;
     }
     setState(() {});
