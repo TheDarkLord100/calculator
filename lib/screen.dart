@@ -18,6 +18,8 @@ class _ScreenState extends State<Screen> {
   String output = '';
   bool hideInput = false;
 
+  bool isOperator(String key) => "+/x-".contains(key);
+
   void onButtonPressed(String key) {
     if(key == 'mode') {
       debugPrint("Mode changed");
@@ -56,14 +58,19 @@ class _ScreenState extends State<Screen> {
       }
     }
 
-    if("+/x-".contains(key)) {
-      debugPrint(key);
+    if(isOperator(key)) {
       hideInput = false;
-      input = input + key;
+      if(input.isNotEmpty && isOperator(input[input.length -1 ])) {
+        input = input.substring(0, input.length - 1);
+        input = input + key;
+      } else {
+        if(input.isNotEmpty || key == '-' || key == '+') {
+          input = input + key;
+        }
+      }
     }
 
     if(".0123456789".contains(key)) {
-      debugPrint(key);
       hideInput = false;
       input = input + key;
     }
