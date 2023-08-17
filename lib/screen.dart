@@ -68,6 +68,9 @@ class _ScreenState extends State<Screen> {
           input = input + key;
         }
       }
+      if(input == '/' || input == 'x') {
+        input = '';
+      }
     }
 
     if(".0123456789".contains(key)) {
