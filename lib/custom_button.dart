@@ -7,20 +7,21 @@ class CustomButton extends StatelessWidget {
       {Key? key,
       this.text,
       required this.onPressed,
-      this.icon,
+      this.icon, required this.darkMode,
       this.backgroundActive = false})
       : super(key: key);
   final String? text;
   final VoidCallback onPressed;
   final Widget? icon;
   final bool backgroundActive;
+  final bool darkMode;
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
         style: ElevatedButton.styleFrom(
             backgroundColor: backgroundActive
-                ? Colours.black.withOpacity(0.1)
+                ? darkMode ? Colours.backgroundWhite.withOpacity(0.1) : Colours.black.withOpacity(0.1)
                 : Colors.transparent,
             elevation: 0,
             shape: RoundedRectangleBorder(
@@ -29,8 +30,8 @@ class CustomButton extends StatelessWidget {
         child: icon ??
             Text(
               text!,
-              style: const TextStyle(
-                  color: Colours.black,
+              style: TextStyle(
+                  color: darkMode ? Colours.backgroundWhite : Colours.black,
                   fontSize: 28,
                   fontWeight: FontWeight.w400),
             ));

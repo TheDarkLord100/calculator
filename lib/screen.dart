@@ -18,12 +18,13 @@ class _ScreenState extends State<Screen> {
   String output = '';
   bool hideInput = false;
   bool resultCalculated = false;
+  bool darkMode = false;
 
   bool isOperator(String key) => "+/x-".contains(key);
 
   void onButtonPressed(String key) {
     if(key == 'mode') {
-      debugPrint("Mode changed");
+      darkMode = !darkMode;
     }
 
     if(key == "AC") {
@@ -104,10 +105,11 @@ class _ScreenState extends State<Screen> {
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: null,
-      backgroundColor: Colours.backgroundWhite,
+      backgroundColor: darkMode ? Colours.backgroundBlack : Colours.backgroundWhite,
       body: Column(
         children: [
-          SizedBox(
+          Container(
+            color: darkMode ? Colours.backgroundBlack : Colours.backgroundWhite,
             width: width,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
@@ -115,22 +117,23 @@ class _ScreenState extends State<Screen> {
               children: [
                 Text(
                   hideInput ? '' : input,
-                  style: const TextStyle(
-                      color: Colours.lightText,
+                  style: TextStyle(
+                      color: darkMode ? Colours.backgroundWhite : Colours.lightText,
                       fontWeight: FontWeight.w600,
                       fontSize: 24),
                 ).padding(bottom: 20),
                 Text(
                   output,
                   style: TextStyle(
+                    color: darkMode ? Colours.backgroundWhite : Colours.black,
                       fontSize: hideInput ? 52 : 36, fontWeight: FontWeight.w600),
                 )
               ],
             ).padding(right: 25, bottom: 20),
           ).asExpanded(),
           Container(
-            decoration: const BoxDecoration(
-              color: Colours.lightGrey,
+            decoration: BoxDecoration(
+              color: darkMode ? Colours.darkGrey : Colours.lightGrey,
             ),
             child: SizedBox(
               width: width,
@@ -142,27 +145,32 @@ class _ScreenState extends State<Screen> {
                     child: Column(
                       children: [
                         CustomButton(
-                          icon: const GradientWidget(
+                          darkMode: darkMode,
+                          icon: GradientWidget(
                             Icon(
-                              Icons.dark_mode_outlined,
+                              darkMode ? Icons.light_mode_outlined : Icons.dark_mode_outlined,
                               size: 36,
                             ),
                           ),
                           onPressed: () => onButtonPressed("mode"),
                         ).vertPadding(val: 20).asExpanded(),
                         CustomButton(
+                          darkMode: darkMode,
                           onPressed: () => onButtonPressed('7'),
                           text: '7',
                         ).vertPadding(val: 20).asExpanded(),
                         CustomButton(
+                          darkMode: darkMode,
                           onPressed: () => onButtonPressed('4'),
                           text: '4',
                         ).vertPadding(val: 20).asExpanded(),
                         CustomButton(
+                          darkMode: darkMode,
                           onPressed: () => onButtonPressed('1'),
                           text: '1',
                         ).vertPadding(val: 20).asExpanded(),
                         CustomButton(
+                          darkMode: darkMode,
                           onPressed: () => onButtonPressed("AC"),
                           icon: const GradientWidget(
                             Text(
@@ -179,6 +187,7 @@ class _ScreenState extends State<Screen> {
                     child: Column(
                       children: [
                         CustomButton(
+                          darkMode: darkMode,
                           onPressed: () => onButtonPressed("DEL"),
                           icon: const GradientWidget(
                             Text(
@@ -189,18 +198,22 @@ class _ScreenState extends State<Screen> {
                           // backgroundActive: true,
                         ).vertPadding(val: 20).asExpanded(),
                         CustomButton(
+                          darkMode: darkMode,
                           onPressed: () => onButtonPressed('8'),
                           text: '8',
                         ).vertPadding(val: 20).asExpanded(),
                         CustomButton(
+                          darkMode: darkMode,
                           onPressed: () => onButtonPressed('5'),
                           text: '5',
                         ).vertPadding(val: 20).asExpanded(),
                         CustomButton(
+                          darkMode: darkMode,
                           onPressed: () => onButtonPressed('2'),
                           text: '2',
                         ).vertPadding(val: 20).asExpanded(),
                         CustomButton(
+                          darkMode: darkMode,
                           onPressed: () => onButtonPressed('0'),
                           text: '0',
                         ).vertPadding(val: 20).asExpanded(),
@@ -212,23 +225,28 @@ class _ScreenState extends State<Screen> {
                     child: Column(
                       children: [
                         CustomButton(
+                          darkMode: darkMode,
                           onPressed: () => onButtonPressed('/'),
                           text: '÷',
                           backgroundActive: true,
                         ).vertPadding(val: 20).asExpanded(),
                         CustomButton(
+                          darkMode: darkMode,
                           onPressed: () => onButtonPressed('9'),
                           text: '9',
                         ).vertPadding(val: 20).asExpanded(),
                         CustomButton(
+                          darkMode: darkMode,
                           onPressed: () => onButtonPressed('6'),
                           text: '6',
                         ).vertPadding(val: 20).asExpanded(),
                         CustomButton(
+                          darkMode: darkMode,
                           onPressed: () => onButtonPressed('3'),
                           text: '3',
                         ).vertPadding(val: 20).asExpanded(),
                         CustomButton(
+                          darkMode: darkMode,
                           onPressed: () => onButtonPressed('.'),
                           text: '.',
                         ).vertPadding(val: 20).asExpanded(),
@@ -240,16 +258,19 @@ class _ScreenState extends State<Screen> {
                     child: Column(
                       children: [
                         CustomButton(
+                          darkMode: darkMode,
                           onPressed: () => onButtonPressed('x'),
                           text: 'x',
                           backgroundActive: true,
                         ).vertPadding(val: 20).asExpanded(),
                         CustomButton(
+                          darkMode: darkMode,
                           onPressed: () => onButtonPressed('-'),
                           text: '−',
                           backgroundActive: true,
                         ).vertPadding(val: 20).asExpanded(),
                         CustomButton(
+                          darkMode: darkMode,
                           onPressed: () => onButtonPressed('+'),
                           text: '+',
                           backgroundActive: true,
@@ -265,6 +286,7 @@ class _ScreenState extends State<Screen> {
                                     Colours.gradientOrange,
                                   ])),
                           child: CustomButton(
+                            darkMode: darkMode,
                             onPressed: () => onButtonPressed("SUBMIT"),
                             icon: const Text(
                               '=',
