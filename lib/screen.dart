@@ -5,7 +5,6 @@ import 'package:calculator/gradient_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:math_expressions/math_expressions.dart';
 
-
 class Screen extends StatefulWidget {
   const Screen({Key? key}) : super(key: key);
 
@@ -23,74 +22,73 @@ class _ScreenState extends State<Screen> {
   bool isOperator(String key) => "+/x-".contains(key);
 
   void onButtonPressed(String key) {
-    if(key == 'mode') {
+    if (key == 'mode') {
       darkMode = !darkMode;
     }
 
-    if(key == "AC") {
+    if (key == "AC") {
       input = '';
       resultCalculated = false;
       output = '';
     }
 
-    if(key == "DEL" && input.isNotEmpty) {
+    if (key == "DEL" && input.isNotEmpty) {
       resultCalculated = false;
-      input = input.substring(0, input.length- 1);
+      input = input.substring(0, input.length - 1);
       hideInput = false;
     }
 
-    if(key == "SUBMIT") {
+    if (key == "SUBMIT") {
       resultCalculated = true;
-      try{
+      try {
         String exp = input.replaceAll('x', '*');
         Parser p = Parser();
         Expression expression = p.parse(exp);
         ContextModel cm = ContextModel();
-        var finalValue = expression.evaluate(
-            EvaluationType.REAL, cm);
-          output = finalValue.toString();
-          if(output.endsWith('.0')) {
-            output = output.substring(0, output.length - 2);
-          }
-          if(output.length > 12) {
-            output = output.substring(0, 10);
-          }
-          input = output;
-          hideInput = true;
+        var finalValue = expression.evaluate(EvaluationType.REAL, cm);
+        output = finalValue.toString();
+        if (output.endsWith('.0')) {
+          output = output.substring(0, output.length - 2);
+        }
+        if (output.length > 12) {
+          output = output.substring(0, 10);
+        }
+        input = output;
+        hideInput = true;
       } on Exception catch (e) {
         debugPrint(e.toString());
-          output = 'ERROR!';
+        output = 'ERROR!';
       }
     }
 
-    if(isOperator(key)) {
+    if (isOperator(key)) {
       hideInput = false;
       resultCalculated = false;
-      if(input.isNotEmpty && isOperator(input[input.length -1 ])) {
+      if (input.isNotEmpty && isOperator(input[input.length - 1])) {
         input = input.substring(0, input.length - 1);
         input = input + key;
       } else {
-        if(input.isNotEmpty || key == '-' || key == '+') {
+        if (input.isNotEmpty || key == '-' || key == '+') {
           input = input + key;
         }
       }
-      if(input == '/' || input == 'x') {
+      if (input == '/' || input == 'x') {
         input = '';
       }
     }
 
-    if(key == '.') {
+    if (key == '.') {
       hideInput = false;
       int lastOp = input.lastIndexOf(RegExp(r'[+/x-]'));
       int pos = input.lastIndexOf('.');
-      if(pos == -1 || pos < lastOp) {
+      if (pos == -1 || pos < lastOp) {
         input = input + key;
       }
     }
 
-    if("0123456789".contains(key)) {
+    if ("0123456789".contains(key)) {
       hideInput = false;
-      if(resultCalculated) {
+      if (resultCalculated) {
         resultCalculated = false;
         input = '';
       }
@@ -105,7 +103,8 @@ class _ScreenState extends State<Screen> {
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: null,
-      backgroundColor: darkMode ? Colours.backgroundBlack : Colours.backgroundWhite,
+      backgroundColor:
+          darkMode ? Colours.backgroundBlack : Colours.backgroundWhite,
       body: Column(
         children: [
           Container(
@@ -118,15 +117,18 @@ class _ScreenState extends State<Screen> {
                 Text(
                   hideInput ? '' : input,
                   style: TextStyle(
-                      color: darkMode ? Colours.backgroundWhite : Colours.lightText,
+                      color: darkMode
+                          ? Colours.backgroundWhite
+                          : Colours.lightText,
                       fontWeight: FontWeight.w600,
                       fontSize: 24),
                 ).padding(bottom: 20),
                 Text(
                   output,
                   style: TextStyle(
-                    color: darkMode ? Colours.backgroundWhite : Colours.black,
-                      fontSize: hideInput ? 52 : 36, fontWeight: FontWeight.w600),
+                      color: darkMode ? Colours.backgroundWhite : Colours.black,
+                      fontSize: hideInput ? 52 : 36,
+                      fontWeight: FontWeight.w600),
                 )
               ],
             ).padding(right: 25, bottom: 20),
@@ -148,7 +150,9 @@ class _ScreenState extends State<Screen> {
                           darkMode: darkMode,
                           icon: GradientWidget(
                             Icon(
-                              darkMode ? Icons.light_mode_outlined : Icons.dark_mode_outlined,
+                              darkMode
+                                  ? Icons.light_mode_outlined
+                                  : Icons.dark_mode_outlined,
                               size: 36,
                             ),
                           ),
