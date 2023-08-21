@@ -78,7 +78,16 @@ class _ScreenState extends State<Screen> {
       }
     }
 
-    if(".0123456789".contains(key)) {
+    if(key == '.') {
+      hideInput = false;
+      int lastOp = input.lastIndexOf(RegExp(r'[+/x-]'));
+      int pos = input.lastIndexOf('.');
+      if(pos == -1 || pos < lastOp) {
+        input = input + key;
+      }
+    }
+
+    if("0123456789".contains(key)) {
       hideInput = false;
       if(resultCalculated) {
         resultCalculated = false;
